@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import kaplay from "kaplay";
+import { loadGameSprites } from "../utils/utils";
 
 function Game() {
   // 1. Create a ref for the canvas element
@@ -25,6 +26,7 @@ function Game() {
     });
 
     k.loadFont("pixel-font", "/fonts/PressStart2P-Regular.ttf");
+    loadGameSprites(k);
 
     // 4. Add your game logic!
     k.scene("main", () => {
@@ -46,12 +48,6 @@ function Game() {
         k.anchor("top"),
         k.color(255, 255, 255),
       ]);
-
-      k.loadSprite("player-idle", "/sprites/player-idle.png");
-      k.loadSprite("player-run-1", "/sprites/player-run-1.png");
-      k.loadSprite("player-run-2", "/sprites/player-run-2.png");
-      k.loadSprite("player-run-3", "/sprites/player-run-3.png");
-      k.loadSprite("player-jump", "/sprites/player-jump.png");
 
       // Add a player
       const player = k.add([
@@ -91,6 +87,30 @@ function Game() {
         k.rect(k.width(), 20),
         k.pos(0, k.height() - 100),
         k.color(0, 255, 0),
+        k.area(),
+        k.body({ isStatic: true }), // Makes it immovable
+        k.outline(2),
+      ]);
+
+      k.add([
+        k.sprite("box-work"),
+        k.pos(250, 350),
+        k.area(),
+        k.body({ isStatic: true }), // Makes it immovable
+        k.outline(2),
+      ]);
+
+      k.add([
+        k.sprite("box-edu"),
+        k.pos(550, 350),
+        k.area(),
+        k.body({ isStatic: true }), // Makes it immovable
+        k.outline(2),
+      ]);
+
+      k.add([
+        k.sprite("box-proj"),
+        k.pos(850, 350),
         k.area(),
         k.body({ isStatic: true }), // Makes it immovable
         k.outline(2),
