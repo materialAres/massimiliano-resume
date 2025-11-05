@@ -88,6 +88,16 @@ function Game() {
         k.outline(2),
       ]);
 
+      for (let i = 0; i < 4; i++) {
+        const cloudHeight = i % 2 === 0 ? 300 + i * 30 : 280 - i * 30;
+        k.add([
+          k.sprite(`cloud-${i + 1}`),
+          k.pos((k.width() / 4) * i + 200, floorHeight - cloudHeight),
+          k.anchor("center"),
+          k.z(-10),
+        ]);
+      }
+
       k.onUpdate(() => {
         if (isMoving) {
           frameTimer += k.dt();
