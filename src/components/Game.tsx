@@ -1,9 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import kaplay from "kaplay";
 import { loadGameSprites } from "../utils/utils";
 
 function Game() {
   const canvasRef = useRef(null);
+  const [isWorkHit, setIsWorkHit] = useState(false);
+  const [isEducationHit, setIsEducationHit] = useState(false);
+  const [isProjectsHit, setIsProjectsHit] = useState(false);
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -31,6 +34,7 @@ function Game() {
         k.body(),
         k.stay(["main"]),
         k.scale(1),
+        "player",
       ]);
 
       let isMoving = false;
@@ -61,32 +65,72 @@ function Game() {
 
       const boxDistanceFromFloor = 170;
 
-      k.add([
-        k.sprite("box-work"),
-        k.pos(k.width() / 4, floorHeight - boxDistanceFromFloor),
-        k.anchor("center"),
-        k.area(),
-        k.body({ isStatic: true }),
-        k.outline(2),
-      ]);
+      const createBumpBox = (sprite, xPos) => {
+        const originalY = floorHeight - boxDistanceFromFloor;
+        const box = k.add([
+          k.sprite(sprite),
+          k.pos(xPos, originalY),
+          k.anchor("center"),
+          k.area(),
+          k.body({ isStatic: true }),
+          k.outline(2),
+          "box", // Tag for collision detection
+        ]);
 
-      k.add([
-        k.sprite("box-edu"),
-        k.pos(k.width() / 2, floorHeight - boxDistanceFromFloor),
-        k.anchor("center"),
-        k.area(),
-        k.body({ isStatic: true }),
-        k.outline(2),
-      ]);
+        let isBumping = false;
+        let bumpTimer = 0;
+        const BUMP_HEIGHT = 20; // How far up the box moves
+        const BUMP_DURATION = 0.3; // Total duration of bump animation
 
-      k.add([
-        k.sprite("box-proj"),
-        k.pos((k.width() / 4) * 3, floorHeight - boxDistanceFromFloor),
-        k.anchor("center"),
-        k.area(),
-        k.body({ isStatic: true }),
-        k.outline(2),
-      ]);
+        box.onUpdate(() => {
+          if (isBumping) {
+            bumpTimer += k.dt();
+
+            // Calculate bump offset using a smooth up-and-down motion
+            const progress = bumpTimer / BUMP_DURATION;
+
+            if (progress < 1) {
+              // Sine wave for smooth up and down motion
+              const offset = Math.sin(progress * Math.PI) * BUMP_HEIGHT;
+              box.pos.y = originalY - offset;
+            } else {
+              // Animation complete, reset
+              box.pos.y = originalY;
+              isBumping = false;
+              bumpTimer = 0;
+            }
+          }
+        });
+
+        // Trigger bump when player collides from below
+        box.onCollide("player", (p) => {
+          if (!isBumping && p.pos.y > box.pos.y) {
+            if (sprite === "box-work") {
+              setIsWorkHit(true);
+              setIsEducationHit(false);
+              setIsProjectsHit(false);
+            } else if (sprite === "box-edu") {
+              setIsWorkHit(false);
+              setIsEducationHit(true);
+              setIsProjectsHit(false);
+            } else if (sprite === "box-proj") {
+              setIsWorkHit(false);
+              setIsEducationHit(false);
+              setIsProjectsHit(true);
+            }
+            // Only bump if player is above the box (hitting from below)
+            isBumping = true;
+            bumpTimer = 0;
+          }
+        });
+
+        return box;
+      };
+
+      // Create the three boxes evenly spaced
+      createBumpBox("box-work", k.width() / 4);
+      createBumpBox("box-edu", k.width() / 2);
+      createBumpBox("box-proj", (k.width() / 4) * 3);
 
       for (let i = 0; i < 4; i++) {
         const cloudHeight = i % 2 === 0 ? 300 + i * 30 : 280 - i * 30;
@@ -161,13 +205,49 @@ function Game() {
 
       {/* HTML Overlay */}
       <div className="absolute top-0 left-0 w-full pointer-events-none p-5 mt-5 text-center">
-        <h1 className="font-['Press_Start_2P'] text-white text-3xl drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] mb-2.5">
+        <h1 className="text-white text-3xl drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] mb-2.5">
           Massimiliano Aresu
         </h1>
 
-        <p className="font-['Press_Start_2P'] text-white text-sm drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0">
+        <p className="text-white text-sm drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0">
           Your friendly neighborhood Web Dev
         </p>
+        {isWorkHit && (
+          <div className="mt-6 px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
+            <h2 className="text-lg">Work Experience</h2>
+            <p className="text-sm">Front-End Developer - EY</p>
+            <p className="text-xs">Apr 2024 - Present</p>
+            <p className="text-xs">Cagliari, Italy</p>
+            <br />
+            <p className="text-sm">Full-Stack Developer - Clariter</p>
+            <p className="text-xs">Feb 2023 - Feb 2024</p>
+            <p className="text-xs">Remote, Italy</p>
+          </div>
+        )}
+        {isEducationHit && (
+          <div className="mt-6 px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
+            <h2 className="text-lg">Education</h2>
+            <p className="text-sm">
+              Banchelor Degree in Languages and Mediation
+            </p>
+            <p className="text-xs">Cagliari, Italy</p>
+          </div>
+        )}
+        {isProjectsHit && (
+          <div className="mt-6 px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
+            <h2 className="text-lg">Projects</h2>
+            <p className="text-sm">The Tempest Videogame</p>
+            <p className="text-xs">
+              An adventure game made with RPG Maker MV based on Shakespeare'
+              play The Tempest
+            </p>
+            <br />
+            <p className="text-sm">Portfolio page</p>
+            <p className="text-xs">
+              Gamified portfolio page built with React and Kaplay
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
