@@ -170,7 +170,7 @@ function Game() {
           Your friendly neighborhood Web Dev
         </p>
         {activeBox === "work" && (
-          <div className="mt-6 px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
+          <div className="mt-10 md:mt-6 px-4 md:px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
             <h2 className="text-lg">Work Experience</h2>
             <p className="text-sm">Front-End Developer - EY</p>
             <p className="text-xs">Apr 2024 - Present</p>
@@ -182,7 +182,7 @@ function Game() {
           </div>
         )}
         {activeBox === "education" && (
-          <div className="mt-6 px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
+          <div className="mt-10 md:mt-6 px-4 md:px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
             <h2 className="text-lg">Education</h2>
             <p className="text-sm">
               Banchelor Degree in Languages and Mediation
@@ -191,7 +191,7 @@ function Game() {
           </div>
         )}
         {activeBox === "projects" && (
-          <div className="mt-6 px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
+          <div className="mt-10 md:mt-6 px-4 md:px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
             <h2 className="text-lg">Projects</h2>
             <p className="text-sm">The Tempest Videogame</p>
             <p className="text-xs">
