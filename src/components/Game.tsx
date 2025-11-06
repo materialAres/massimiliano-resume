@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import kaplay from "kaplay";
-import { loadGameSprites } from "../utils/utils";
+import { boxMap, createBumpBox, loadGameSprites } from "../utils/utils";
 
 function Game() {
   const canvasRef = useRef(null);
-  const [isWorkHit, setIsWorkHit] = useState(false);
-  const [isEducationHit, setIsEducationHit] = useState(false);
-  const [isProjectsHit, setIsProjectsHit] = useState(false);
+  const [activeBox, setActiveBox] = useState(null);
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -65,72 +63,31 @@ function Game() {
 
       const boxDistanceFromFloor = 170;
 
-      const createBumpBox = (sprite, xPos) => {
-        const originalY = floorHeight - boxDistanceFromFloor;
-        const box = k.add([
-          k.sprite(sprite),
-          k.pos(xPos, originalY),
-          k.anchor("center"),
-          k.area(),
-          k.body({ isStatic: true }),
-          k.outline(2),
-          "box", // Tag for collision detection
-        ]);
-
-        let isBumping = false;
-        let bumpTimer = 0;
-        const BUMP_HEIGHT = 20; // How far up the box moves
-        const BUMP_DURATION = 0.3; // Total duration of bump animation
-
-        box.onUpdate(() => {
-          if (isBumping) {
-            bumpTimer += k.dt();
-
-            // Calculate bump offset using a smooth up-and-down motion
-            const progress = bumpTimer / BUMP_DURATION;
-
-            if (progress < 1) {
-              // Sine wave for smooth up and down motion
-              const offset = Math.sin(progress * Math.PI) * BUMP_HEIGHT;
-              box.pos.y = originalY - offset;
-            } else {
-              // Animation complete, reset
-              box.pos.y = originalY;
-              isBumping = false;
-              bumpTimer = 0;
-            }
-          }
-        });
-
-        // Trigger bump when player collides from below
-        box.onCollide("player", (p) => {
-          if (!isBumping && p.pos.y > box.pos.y) {
-            if (sprite === "box-work") {
-              setIsWorkHit(true);
-              setIsEducationHit(false);
-              setIsProjectsHit(false);
-            } else if (sprite === "box-edu") {
-              setIsWorkHit(false);
-              setIsEducationHit(true);
-              setIsProjectsHit(false);
-            } else if (sprite === "box-proj") {
-              setIsWorkHit(false);
-              setIsEducationHit(false);
-              setIsProjectsHit(true);
-            }
-            // Only bump if player is above the box (hitting from below)
-            isBumping = true;
-            bumpTimer = 0;
-          }
-        });
-
-        return box;
-      };
-
       // Create the three boxes evenly spaced
-      createBumpBox("box-work", k.width() / 4);
-      createBumpBox("box-edu", k.width() / 2);
-      createBumpBox("box-proj", (k.width() / 4) * 3);
+      createBumpBox(
+        "box-work",
+        k.width() / 4,
+        k,
+        floorHeight,
+        boxDistanceFromFloor,
+        setActiveBox
+      );
+      createBumpBox(
+        "box-edu",
+        k.width() / 2,
+        k,
+        floorHeight,
+        boxDistanceFromFloor,
+        setActiveBox
+      );
+      createBumpBox(
+        "box-proj",
+        (k.width() / 4) * 3,
+        k,
+        floorHeight,
+        boxDistanceFromFloor,
+        setActiveBox
+      );
 
       for (let i = 0; i < 4; i++) {
         const cloudHeight = i % 2 === 0 ? 300 + i * 30 : 280 - i * 30;
@@ -212,7 +169,7 @@ function Game() {
         <p className="text-white text-sm drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0">
           Your friendly neighborhood Web Dev
         </p>
-        {isWorkHit && (
+        {activeBox === "work" && (
           <div className="mt-6 px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
             <h2 className="text-lg">Work Experience</h2>
             <p className="text-sm">Front-End Developer - EY</p>
@@ -224,7 +181,7 @@ function Game() {
             <p className="text-xs">Remote, Italy</p>
           </div>
         )}
-        {isEducationHit && (
+        {activeBox === "education" && (
           <div className="mt-6 px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
             <h2 className="text-lg">Education</h2>
             <p className="text-sm">
@@ -233,7 +190,7 @@ function Game() {
             <p className="text-xs">Cagliari, Italy</p>
           </div>
         )}
-        {isProjectsHit && (
+        {activeBox === "projects" && (
           <div className="mt-6 px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
             <h2 className="text-lg">Projects</h2>
             <p className="text-sm">The Tempest Videogame</p>
