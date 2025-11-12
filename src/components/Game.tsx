@@ -94,13 +94,14 @@ function Game() {
         setActiveBox
       );
 
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 5; i++) {
         const cloudHeight = i % 2 === 0 ? 300 + i * 30 : 280 - i * 30;
         k.add([
           k.sprite(`cloud-${i + 1}`),
-          k.pos((k.width() / 4) * i + 200, floorHeight - cloudHeight),
+          k.pos((k.width() / 5) * i + 100, floorHeight - cloudHeight),
           k.anchor("center"),
           k.z(-10),
+          k.scale(i === 4 ? 1.2 : 1),
         ]);
       }
 
@@ -175,39 +176,51 @@ function Game() {
           Your friendly neighborhood Web Dev
         </p>
         {activeBox === "work" && (
-          <div className="mt-10 md:mt-6 px-4 md:px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
-            <h2 className="text-lg">Work Experience</h2>
-            <p className="text-sm">Front-End Developer - EY</p>
-            <p className="text-xs">Apr 2024 - Present</p>
-            <p className="text-xs">Cagliari, Italy</p>
-            <br />
-            <p className="text-sm">Full-Stack Developer - Clariter</p>
-            <p className="text-xs">Feb 2023 - Feb 2024</p>
-            <p className="text-xs">Remote, Italy</p>
+          <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
+            <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
+              <div className="relative z-10">
+                <h2 className="text-lg mb-3">Work Experience</h2>
+                <p className="text-sm">Front-End Developer - EY</p>
+                <p className="text-xs">Apr 2024 - Present</p>
+                <p className="text-xs mb-3">Cagliari, Italy</p>
+                <p className="text-sm">Full-Stack Developer - Clariter</p>
+                <p className="text-xs">Feb 2023 - Feb 2024</p>
+                <p className="text-xs">Remote, Italy</p>
+              </div>
+            </div>
           </div>
         )}
+
         {activeBox === "education" && (
-          <div className="mt-10 md:mt-6 px-4 md:px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
-            <h2 className="text-lg">Education</h2>
-            <p className="text-sm">
-              Banchelor Degree in Languages and Mediation
-            </p>
-            <p className="text-xs">Cagliari, Italy</p>
+          <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
+            <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
+              <div className="relative z-10">
+                <h2 className="text-lg mb-3">Education</h2>
+                <p className="text-sm">
+                  Bachelor Degree in Languages and Mediation
+                </p>
+                <p className="text-xs">Cagliari, Italy</p>
+              </div>
+            </div>
           </div>
         )}
+
         {activeBox === "projects" && (
-          <div className="mt-10 md:mt-6 px-4 md:px-56 text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] animate-[pixelScale_0.5s_cubic-bezier(0.68,-0.55,0.265,1.55)]">
-            <h2 className="text-lg">Projects</h2>
-            <p className="text-sm">The Tempest Videogame</p>
-            <p className="text-xs">
-              An adventure game made with RPG Maker MV based on Shakespeare'
-              play The Tempest
-            </p>
-            <br />
-            <p className="text-sm">Portfolio page</p>
-            <p className="text-xs">
-              Gamified portfolio page built with React and Kaplay
-            </p>
+          <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
+            <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
+              <div className="relative z-10">
+                <h2 className="text-lg mb-3">Projects</h2>
+                <p className="text-sm">The Tempest Videogame</p>
+                <p className="text-xs mb-3">
+                  An adventure game made with RPG Maker MV based on
+                  Shakespeare's play The Tempest
+                </p>
+                <p className="text-sm">Portfolio page</p>
+                <p className="text-xs">
+                  Gamified portfolio page built with React and Kaplay
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </div>
