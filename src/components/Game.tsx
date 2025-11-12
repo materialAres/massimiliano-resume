@@ -11,18 +11,16 @@ function Game() {
       return;
     }
 
+    // INIT KAPLAY AND SPRITES
     const k = kaplay({
       canvas: canvasRef.current,
       background: [165, 217, 253],
     });
 
-    // k.loadFont("pixel-font", "/fonts/PressStart2P-Regular.ttf");
     loadGameSprites(k);
 
     k.scene("main", () => {
       k.setGravity(1600);
-
-      // Remove the text elements - they'll be HTML now
 
       // Add a player
       const player = k.add([
@@ -50,20 +48,27 @@ function Game() {
         }
       });
 
-      // Add a floor
-      const floorHeight = k.height() - 100;
+      // Floor
+      const floorHeight = k.height() - 42;
       k.add([
-        k.rect(k.width(), 20),
+        k.sprite("ground"),
+        k.pos(0, floorHeight + 18),
+        k.anchor("center"),
+        k.scale(2),
+      ]);
+
+      // Invisible collision box to improve visual
+      k.add([
+        k.rect(k.width(), 40),
         k.pos(0, floorHeight),
-        k.color(0, 255, 0),
+        k.opacity(0), // Make it invisible
         k.area(),
         k.body({ isStatic: true }),
-        k.outline(2),
       ]);
 
       const boxDistanceFromFloor = 170;
 
-      // Create the three boxes evenly spaced
+      // Section boxes
       createBumpBox(
         "box-work",
         k.width() / 4,

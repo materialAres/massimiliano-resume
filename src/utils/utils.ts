@@ -12,6 +12,7 @@ export const SPRITE_FRAMES = {
   "cloud-2": "/assets/cloud-2.png",
   "cloud-3": "/assets/cloud-3.png",
   "cloud-4": "/assets/cloud-4.png",
+  ground: "/assets/ground.png",
 };
 
 export const boxMap = {
