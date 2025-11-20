@@ -18,6 +18,8 @@ function Game() {
     });
 
     loadGameSprites(k);
+    k.loadSound("step", "/sounds/step.wav");
+    k.loadSound("jump", "/sounds/jump.wav");
 
     k.scene("main", () => {
       k.setGravity(1600);
@@ -37,7 +39,9 @@ function Game() {
       let facingRight = true;
       let runFrame = 1;
       let frameTimer = 0;
-      const FRAME_DURATION = 0.12;
+      const FRAME_DURATION = 0.1;
+      let stepSoundTimer = 0;
+      const STEP_SOUND_INTERVAL = 0.25;
 
       player.onUpdate(() => {
         if (player.pos.x < 0) {
@@ -106,48 +110,59 @@ function Game() {
       }
 
       k.onUpdate(() => {
-        if (isMoving) {
+        if (isMoving && player.isGrounded()) {
+          stepSoundTimer += k.dt();
+
+          if (stepSoundTimer >= STEP_SOUND_INTERVAL) {
+            k.play("step", { volume: 0.3 }); // Adjust volume as needed
+            stepSoundTimer = 0;
+          }
+
           frameTimer += k.dt();
-          if (frameTimer >= FRAME_DURATION && player.isGrounded()) {
+          if (frameTimer >= FRAME_DURATION) {
             frameTimer = 0;
-            runFrame = runFrame === 3 ? 1 : runFrame + 1;
+            runFrame = runFrame === 4 ? 1 : runFrame + 1;
             player.use(k.sprite(`player-run-${runFrame}`));
           }
-        } else if (player.isGrounded() && !player.isJumping()) {
-          player.use(k.sprite(`player-idle`));
+        } else {
+          stepSoundTimer = 0; // Reset when not moving
+          if (player.isGrounded() && !player.isJumping()) {
+            player.use(k.sprite(`player-idle`));
+          }
         }
         player.flipX = !facingRight;
       });
 
-      k.onKeyPress("space", () => {
+      k.onKeyPress("w", () => {
         if (player.isGrounded()) {
           player.jump();
           player.use(k.sprite("player-jump"));
+          k.play("jump", { volume: 0.3 });
         }
       });
 
       const SPEED = 320;
 
-      k.onKeyDown("left", () => {
+      k.onKeyDown("a", () => {
         player.move(-SPEED, 0);
         isMoving = true;
         facingRight = false;
       });
 
-      k.onKeyDown("right", () => {
+      k.onKeyDown("d", () => {
         player.move(SPEED, 0);
         isMoving = true;
         facingRight = true;
       });
 
-      k.onKeyRelease("left", () => {
+      k.onKeyRelease("a", () => {
         isMoving = false;
         player.use(k.sprite("player-idle"));
         frameTimer = 0;
         runFrame = 1;
       });
 
-      k.onKeyRelease("right", () => {
+      k.onKeyRelease("d", () => {
         isMoving = false;
         player.use(k.sprite("player-idle"));
         frameTimer = 0;
