@@ -1,6 +1,6 @@
 ## TODO
 
-- aggiustare il colore dei testi per non farli scontrare con le nuvole
+- aggiustare il colore dei testi per non farli scontrare con le nuvole DONE
 - provare ad ingrandire le nuvole DONE
 - aggiungere il terreno DONE
 - aggiungere suoni e una musica

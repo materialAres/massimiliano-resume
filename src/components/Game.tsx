@@ -5,6 +5,7 @@ import { boxMap, createBumpBox, loadGameSprites } from "../utils/utils";
 function Game() {
   const canvasRef = useRef(null);
   const [activeBox, setActiveBox] = useState(null);
+  const [isInStartScreen, setIsInStartScreen] = useState(true);
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -20,8 +21,19 @@ function Game() {
     loadGameSprites(k);
     k.loadSound("step", "/sounds/step.wav");
     k.loadSound("jump", "/sounds/jump.wav");
+    k.loadSound("bgmusic", "/sounds/bg-music.mp3");
+
+    k.scene("start", () => {
+      setIsInStartScreen(true);
+
+      k.onKeyPress("space", () => {
+        k.play("bgmusic", { loop: true, volume: 0.2 }); // Start background music
+        k.go("main");
+      });
+    });
 
     k.scene("main", () => {
+      setIsInStartScreen(false);
       k.setGravity(1600);
 
       // Add a player
@@ -114,7 +126,7 @@ function Game() {
           stepSoundTimer += k.dt();
 
           if (stepSoundTimer >= STEP_SOUND_INTERVAL) {
-            k.play("step", { volume: 0.3 }); // Adjust volume as needed
+            k.play("step", { volume: 3 });
             stepSoundTimer = 0;
           }
 
@@ -170,7 +182,7 @@ function Game() {
       });
     });
 
-    k.go("main");
+    k.go("start");
 
     return () => {
       k.quit();
@@ -180,65 +192,71 @@ function Game() {
   return (
     <div className="relative w-full h-screen">
       <canvas ref={canvasRef} className="block w-full h-full"></canvas>
+      {isInStartScreen ? (
+        <div className="absolute top-0 left-0 w-full h-screen bg-[#a5d9fd] flex flex-col justify-center items-center z-20">
+          <h1 className="text-white text-4xl mb-6 animate-pulse">
+            Press SPACE to Start
+          </h1>
+        </div>
+      ) : (
+        <div className="absolute top-0 left-0 w-full pointer-events-none p-5 mt-5 text-center">
+          <h1 className="text-white text-3xl drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] mb-2.5">
+            Massimiliano Aresu
+          </h1>
 
-      {/* HTML Overlay */}
-      <div className="absolute top-0 left-0 w-full pointer-events-none p-5 mt-5 text-center">
-        <h1 className="text-white text-3xl drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] mb-2.5">
-          Massimiliano Aresu
-        </h1>
-
-        <p className="text-white text-sm drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0">
-          Your friendly neighborhood Web Dev
-        </p>
-        {activeBox === "work" && (
-          <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
-            <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
-              <div className="relative z-10">
-                <h2 className="text-lg mb-3">Work Experience</h2>
-                <p className="text-sm">Front-End Developer - EY</p>
-                <p className="text-xs">Apr 2024 - Present</p>
-                <p className="text-xs mb-3">Cagliari, Italy</p>
-                <p className="text-sm">Full-Stack Developer - Clariter</p>
-                <p className="text-xs">Feb 2023 - Feb 2024</p>
-                <p className="text-xs">Remote, Italy</p>
+          <p className="text-white text-sm drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0">
+            Your friendly neighborhood Web Dev
+          </p>
+          {activeBox === "work" && (
+            <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
+              <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
+                <div className="relative z-10">
+                  <h2 className="text-lg mb-3">Work Experience</h2>
+                  <p className="text-sm">Front-End Developer - EY</p>
+                  <p className="text-xs">Apr 2024 - Present</p>
+                  <p className="text-xs mb-3">Cagliari, Italy</p>
+                  <p className="text-sm">Full-Stack Developer - Clariter</p>
+                  <p className="text-xs">Feb 2023 - Feb 2024</p>
+                  <p className="text-xs">Remote, Italy</p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {activeBox === "education" && (
-          <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
-            <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
-              <div className="relative z-10">
-                <h2 className="text-lg mb-3">Education</h2>
-                <p className="text-sm">
-                  Bachelor Degree in Languages and Mediation
-                </p>
-                <p className="text-xs">Cagliari, Italy</p>
+          {activeBox === "education" && (
+            <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
+              <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
+                <div className="relative z-10">
+                  <h2 className="text-lg mb-3">Education</h2>
+                  <p className="text-sm">
+                    Bachelor Degree in Languages and Mediation
+                  </p>
+                  <p className="text-xs">Cagliari, Italy</p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {activeBox === "projects" && (
-          <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
-            <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
-              <div className="relative z-10">
-                <h2 className="text-lg mb-3">Projects</h2>
-                <p className="text-sm">The Tempest Videogame</p>
-                <p className="text-xs mb-3">
-                  An adventure game made with RPG Maker MV based on
-                  Shakespeare's play The Tempest
-                </p>
-                <p className="text-sm">Portfolio page</p>
-                <p className="text-xs">
-                  Gamified portfolio page built with React and Kaplay
-                </p>
+          {activeBox === "projects" && (
+            <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
+              <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
+                <div className="relative z-10">
+                  <h2 className="text-lg mb-3">Projects</h2>
+                  <p className="text-sm">The Tempest Videogame</p>
+                  <p className="text-xs mb-3">
+                    An adventure game made with RPG Maker MV based on
+                    Shakespeare's play The Tempest
+                  </p>
+                  <p className="text-sm">Portfolio page</p>
+                  <p className="text-xs">
+                    Gamified portfolio page built with React and Kaplay
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
