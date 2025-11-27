@@ -3,7 +3,7 @@ import kaplay from "kaplay";
 import { boxMap, createBumpBox, loadGameSprites } from "../utils/utils";
 
 function Game() {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [activeBox, setActiveBox] = useState(null);
   const [isInStartScreen, setIsInStartScreen] = useState(true);
 
@@ -191,9 +191,18 @@ function Game() {
 
   return (
     <div className="relative w-full h-screen">
-      <canvas ref={canvasRef} className="block w-full h-full"></canvas>
+      <canvas
+        ref={canvasRef}
+        className="block w-full h-full focus:outline-none"
+        tabIndex={0}
+      ></canvas>
       {isInStartScreen ? (
-        <div className="absolute top-0 left-0 w-full h-screen bg-[#a5d9fd] flex flex-col justify-center items-center z-20">
+        <div
+          className="absolute top-0 left-0 w-full h-screen bg-[#a5d9fd] flex flex-col justify-center items-center z-20"
+          onClick={() => {
+            canvasRef.current?.focus();
+          }}
+        >
           <h1 className="text-white text-4xl mb-6 animate-pulse">
             Press SPACE to Start
           </h1>
