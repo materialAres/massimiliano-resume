@@ -22,19 +22,19 @@ export const boxMap = {
   "box-proj": "projects",
 };
 
-export const loadGameSprites = (k) => {
+export const loadGameSprites = (k: any) => {
   for (const [key, path] of Object.entries(SPRITE_FRAMES)) {
     k.loadSprite(key, path);
   }
 };
 
 export const createBumpBox = (
-  sprite,
-  xPos,
-  k,
-  floorHeight,
-  boxDistanceFromFloor,
-  setActiveBox
+  sprite: string,
+  xPos: number,
+  k: any,
+  floorHeight: number,
+  boxDistanceFromFloor: number,
+  setActiveBox: any
 ) => {
   const originalY = floorHeight - boxDistanceFromFloor;
   const box = k.add([
@@ -73,10 +73,9 @@ export const createBumpBox = (
   });
 
   // Trigger bump when player collides from below
-  box.onCollide("player", (p) => {
-    if (!isBumping && p.pos.y > box.pos.y) {
-      setActiveBox(boxMap[sprite]);
-      // Only bump if player is above the box (hitting from below)
+  box.onCollide("player", (p: any, col: any) => {
+    if (!isBumping && col.isBottom()) {
+      setActiveBox(boxMap[sprite as keyof typeof boxMap]);
       isBumping = true;
       bumpTimer = 0;
     }

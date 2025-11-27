@@ -6,4 +6,4 @@
 - aggiungere suoni e una musica DONE
 - aggiungere tooltip per aiuto comandi
 - visualizzazione mobile
-- fare in modo che le scatole non subiscano l'hit se prese lateralmente
+- fare in modo che le scatole non subiscano l'hit se prese lateralmente DONE
