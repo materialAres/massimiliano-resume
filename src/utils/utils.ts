@@ -73,7 +73,7 @@ export const createBumpBox = (
   });
 
   // Trigger bump when player collides from below
-  box.onCollide("player", (p: any, col: any) => {
+  box.onCollide("player", (_p: any, col: any) => {
     if (!isBumping && col.isBottom()) {
       setActiveBox(boxMap[sprite as keyof typeof boxMap]);
       isBumping = true;
