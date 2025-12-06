@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import kaplay from "kaplay";
 import { createBumpBox, loadGameSprites } from "../utils/utils";
-import useIsMobile from "../hooks/useIsMobile";
 import { useMobileLandscape } from "../hooks/useMobileLandscape";
 
 function Game() {
@@ -11,13 +10,14 @@ function Game() {
   const [showHelp, setShowHelp] = useState(false);
   // const isMobile = useIsMobile();
   const isMobile = useMobileLandscape();
-  
+
   // Mobile controls state
   const [mobileControls, setMobileControls] = useState({
     left: false,
     right: false,
     jump: false,
   });
+
   const mobileControlsRef = useRef(mobileControls);
 
   useEffect(() => {
@@ -108,7 +108,7 @@ function Game() {
         k,
         floorHeight,
         boxDistanceFromFloor,
-        setActiveBox
+        setActiveBox,
       );
       createBumpBox(
         "box-edu",
@@ -116,7 +116,7 @@ function Game() {
         k,
         floorHeight,
         boxDistanceFromFloor,
-        setActiveBox
+        setActiveBox,
       );
       createBumpBox(
         "box-proj",
@@ -124,7 +124,7 @@ function Game() {
         k,
         floorHeight,
         boxDistanceFromFloor,
-        setActiveBox
+        setActiveBox,
       );
 
       for (let i = 0; i < 5; i++) {
@@ -219,8 +219,8 @@ function Game() {
           onClick={() => {
             canvasRef.current?.focus();
             if (isMobile && kRef.current) {
-               kRef.current.play("bgmusic", { loop: true, volume: 0.2 });
-               kRef.current.go("main");
+              kRef.current.play("bgmusic", { loop: true, volume: 0.2 });
+              kRef.current.go("main");
             }
           }}
         >
@@ -263,66 +263,112 @@ function Game() {
             </div>
           )}
 
-          <div className={`absolute top-0 left-0 w-full pointer-events-none p-5 mt-5`}>
-            <h1 className={`text-white ${isMobile ? "text-lg text-right" : "text-3xl text-center"} drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] mb-2.5`}>
+          <div
+            className={`absolute top-0 left-0 w-full pointer-events-none p-5`}
+          >
+            <h1
+              className={`text-white ${isMobile ? "text-lg text-right" : "text-3xl text-center"} drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] mb-2.5`}
+            >
               Massimiliano Aresu
             </h1>
 
-            <p className={`text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0 ${isMobile ? "text-[10px] text-right" : "text-sm text-center"}`}>
+            <p
+              className={`text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0 ${isMobile ? "text-[10px] text-right" : "text-sm text-center"}`}
+            >
               Your friendly neighborhood Web Dev
             </p>
             {activeBox === "work" && (
-              <div className={`mt-10 md:mt-6 ${isMobile ? "" : "mx-72"} text-white animate-[pixelScale_0.4s_ease-out]`}>
-                <div className={!isMobile ? "bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none" : "text-left"}>
+              <div
+                className={`mt-10 md:mt-6 ${isMobile ? "mx-auto max-w-sm" : "mx-72"} text-white animate-[pixelScale_0.4s_ease-out]`}
+              >
+                <div
+                  className={`${isMobile ? "max-w-sm bg-[#E0B45D]/40" : "max-w-svw bg-[#E0B45D]"} border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none`}
+                >
                   <div className="relative z-10 text-center drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
-                    <h2 className={`${isMobile ? "text-base" : "text-lg"} mb-3`}>Work Experience</h2>
-                    <p className={isMobile ? "text-xs" : "text-sm"}>Front-End Developer - EY</p>
-                    <p className={isMobile ? "text-[10px]" : "text-xs"}>Apr 2024 - Present</p>
-                    <p className={`${isMobile ? "text-[10px]" : "text-xs"} mb-3`}>Cagliari, Italy</p>
-                    <p className={isMobile ? "text-xs" : "text-sm"}>Full-Stack Developer - Clariter</p>
-                    <p className={isMobile ? "text-[10px]" : "text-xs"}>Feb 2023 - Feb 2024</p>
-                    <p className={isMobile ? "text-[10px]" : "text-xs"}>Remote, Italy</p>
+                    <h2 className={`${isMobile ? "text-sm" : "text-lg"} mb-3`}>
+                      Work Experience
+                    </h2>
+                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
+                      Front-End Developer - EY
+                    </p>
+                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
+                      Apr 2024 - Present
+                    </p>
+                    <p
+                      className={`${isMobile ? "text-[8px]" : "text-xs"} mb-3`}
+                    >
+                      Cagliari, Italy
+                    </p>
+                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
+                      Full-Stack Developer - Clariter
+                    </p>
+                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
+                      Feb 2023 - Feb 2024
+                    </p>
+                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
+                      Remote, Italy
+                    </p>
                   </div>
                 </div>
               </div>
             )}
 
             {activeBox === "education" && (
-              <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
-                <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
-                  <div className="relative z-10">
-                    <h2 className={`${isMobile ? "text-base" : "text-lg"} mb-3`}>Education</h2>
-                    <p className={isMobile ? "text-xs" : "text-sm"}>
+              <div
+                className={`mt-10 md:mt-6 ${isMobile ? "mx-auto max-w-sm" : "mx-72"} text-white animate-[pixelScale_0.4s_ease-out]`}
+              >
+                <div
+                  className={`${isMobile ? "max-w-sm bg-[#E0B45D]/40" : "max-w-svw bg-[#E0B45D]"} border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none`}
+                >
+                  <div className="relative z-10 text-center drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
+                    <h2 className={`${isMobile ? "text-sm" : "text-lg"} mb-3`}>
+                      Education
+                    </h2>
+                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
                       Bachelor Degree in Languages and Mediation
                     </p>
-                    <p className={isMobile ? "text-[10px]" : "text-xs"}>Cagliari, Italy</p>
+                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
+                      Cagliari, Italy
+                    </p>
                   </div>
                 </div>
               </div>
             )}
 
             {activeBox === "projects" && (
-              <div className="mt-10 md:mt-6 mx-4 md:mx-72 text-white animate-[pixelScale_0.4s_ease-out]">
-                <div className="bg-[#E0B45D] border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none">
-                  <div className="relative z-10">
-                    <h2 className={`${isMobile ? "text-base" : "text-lg"} mb-3`}>Projects</h2>
-                    <p className={isMobile ? "text-xs" : "text-sm"}>The Tempest Videogame</p>
-                    <p className={`${isMobile ? "text-[10px]" : "text-xs"} mb-3`}>
+              <div
+                className={`mt-10 md:mt-6 ${isMobile ? "mx-auto max-w-sm" : "mx-72"} text-white animate-[pixelScale_0.4s_ease-out]`}
+              >
+                <div
+                  className={`${isMobile ? "max-w-sm bg-[#E0B45D]/40" : "max-w-svw bg-[#E0B45D]"} border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none`}
+                >
+                  <div className="relative z-10 text-center drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
+                    <h2 className={`${isMobile ? "text-sm" : "text-lg"} mb-3`}>
+                      Projects
+                    </h2>
+                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
+                      The Tempest Videogame
+                    </p>
+                    <p
+                      className={`${isMobile ? "text-[8px]" : "text-xs"} mb-3`}
+                    >
                       An adventure game made with RPG Maker MV based on
                       Shakespeare's play The Tempest
                     </p>
-                    <p className={isMobile ? "text-xs" : "text-sm"}>Portfolio page</p>
-                    <p className={isMobile ? "text-[10px]" : "text-xs"}>
+                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
+                      Portfolio page
+                    </p>
+                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
                       Gamified portfolio page built with React and Kaplay
                     </p>
                   </div>
                 </div>
               </div>
             )}
-        </div>
+          </div>
         </>
       )}
-      
+
       {/* Mobile Controls */}
       {isMobile && !isInStartScreen && (
         <>
@@ -331,30 +377,52 @@ function Game() {
               className="w-16 h-16 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
               onTouchStart={(e) => {
                 e.preventDefault(); // Prevent scrolling/selection
-                setMobileControls(prev => ({ ...prev, left: true }));
+                setMobileControls((prev) => ({ ...prev, left: true }));
               }}
               onTouchEnd={(e) => {
                 e.preventDefault();
-                setMobileControls(prev => ({ ...prev, left: false }));
+                setMobileControls((prev) => ({ ...prev, left: false }));
               }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="white" className="w-8 h-8">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2.5}
+                stroke="white"
+                className="w-8 h-8"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 19.5L8.25 12l7.5-7.5"
+                />
               </svg>
             </button>
             <button
               className="w-16 h-16 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
               onTouchStart={(e) => {
                 e.preventDefault();
-                setMobileControls(prev => ({ ...prev, right: true }));
+                setMobileControls((prev) => ({ ...prev, right: true }));
               }}
               onTouchEnd={(e) => {
                 e.preventDefault();
-                setMobileControls(prev => ({ ...prev, right: false }));
+                setMobileControls((prev) => ({ ...prev, right: false }));
               }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="white" className="w-8 h-8">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2.5}
+                stroke="white"
+                className="w-8 h-8"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                />
               </svg>
             </button>
           </div>
@@ -364,11 +432,11 @@ function Game() {
               className="w-20 h-20 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
               onTouchStart={(e) => {
                 e.preventDefault();
-                setMobileControls(prev => ({ ...prev, jump: true }));
+                setMobileControls((prev) => ({ ...prev, jump: true }));
               }}
               onTouchEnd={(e) => {
                 e.preventDefault();
-                setMobileControls(prev => ({ ...prev, jump: false }));
+                setMobileControls((prev) => ({ ...prev, jump: false }));
               }}
             >
               <span className="text-white font-bold text-xl">JUMP</span>
