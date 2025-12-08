@@ -3,16 +3,17 @@ import kaplay from "kaplay";
 import { createBumpBox, loadGameSprites } from "../utils/utils";
 import { useMobileLandscape } from "../hooks/useMobileLandscape";
 import { useOrientation } from "../hooks/useOrientation";
+import useHasSmallHeight from "../hooks/useIsMobile";
 
 function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [activeBox, setActiveBox] = useState(null);
   const [isInStartScreen, setIsInStartScreen] = useState(true);
   const [showHelp, setShowHelp] = useState(false);
-  // const isMobile = useIsMobile();
 
   const isMobile = useMobileLandscape();
   const isPortrait = useOrientation();
+  const hasSmallHeight = useHasSmallHeight();
 
   // Mobile controls state
   const [mobileControls, setMobileControls] = useState({
@@ -301,7 +302,7 @@ function Game() {
             </p>
             {activeBox === "work" && (
               <div
-                className={`mt-10 md:mt-6 ${isMobile ? "mx-auto max-w-sm" : "mx-72"} text-white animate-[pixelScale_0.4s_ease-out]`}
+                className={`mt-10 md:mt-6 ${isMobile ? (!hasSmallHeight ? "mx-auto max-w-sm" : "absolute top-0 left-2") : "mx-72"} text-white animate-[pixelScale_0.4s_ease-out]`}
               >
                 <div
                   className={`${isMobile ? "max-w-sm bg-[#E0B45D]/40" : "max-w-svw bg-[#E0B45D]"} border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none`}
@@ -337,7 +338,7 @@ function Game() {
 
             {activeBox === "education" && (
               <div
-                className={`mt-10 md:mt-6 ${isMobile ? "mx-auto max-w-sm" : "mx-72"} text-white animate-[pixelScale_0.4s_ease-out]`}
+                className={`mt-10 md:mt-6 ${isMobile ? (!hasSmallHeight ? "mx-auto max-w-sm" : "absolute top-0 left-2") : "mx-72"} text-white animate-[pixelScale_0.4s_ease-out]`}
               >
                 <div
                   className={`${isMobile ? "max-w-sm bg-[#E0B45D]/40" : "max-w-svw bg-[#E0B45D]"} border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none`}
@@ -349,8 +350,16 @@ function Game() {
                     <p className={isMobile ? "text-[10px]" : "text-sm"}>
                       Bachelor Degree in Languages and Mediation
                     </p>
-                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
+                    <p
+                      className={`${isMobile ? "text-[8px]" : "text-xs"} mb-3`}
+                    >
                       Cagliari, Italy
+                    </p>
+                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
+                      Django for Everybody, Python Course
+                    </p>
+                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
+                      Coursera.org
                     </p>
                   </div>
                 </div>
@@ -359,7 +368,7 @@ function Game() {
 
             {activeBox === "projects" && (
               <div
-                className={`mt-10 md:mt-6 ${isMobile ? "mx-auto max-w-sm" : "mx-72"} text-white animate-[pixelScale_0.4s_ease-out]`}
+                className={`mt-10 md:mt-6 ${isMobile ? (!hasSmallHeight ? "mx-auto max-w-sm" : "absolute top-0 left-2") : "mx-72"} text-white animate-[pixelScale_0.4s_ease-out]`}
               >
                 <div
                   className={`${isMobile ? "max-w-sm bg-[#E0B45D]/40" : "max-w-svw bg-[#E0B45D]"} border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none`}

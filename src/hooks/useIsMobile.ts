@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
+const useHasSmallHeight = () => {
+  const [hasSmallHeight, setHasSmallHeight] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const checkHeight = () => {
+      setHasSmallHeight(window.innerHeight < 350);
     };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+    checkHeight();
+    window.addEventListener("resize", checkHeight);
 
-    return () => window.removeEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkHeight);
   }, []);
 
-  return isMobile;
+  return hasSmallHeight;
 };
 
-export default useIsMobile;
+export default useHasSmallHeight;
