@@ -4,6 +4,14 @@
 - provare ad ingrandire le nuvole DONE
 - aggiungere il terreno DONE
 - aggiungere suoni e una musica DONE
-- aggiungere tooltip per aiuto comandi
+- aggiungere tooltip per aiuto comandi DONE
 - visualizzazione mobile
+- grandezza tasti mobile
+- visualizzazione tablet
 - fare in modo che le scatole non subiscano l'hit se prese lateralmente DONE
+
+## BUGS
+
+- Mobile
+  - Firefox: il contenuto e' tagliato sotto e non si vede il terreno
+  - Chrome: il terreno non si vede

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import kaplay from "kaplay";
 import { createBumpBox, loadGameSprites } from "../utils/utils";
 import { useMobileLandscape } from "../hooks/useMobileLandscape";
+import { useOrientation } from "../hooks/useOrientation";
 
 function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -9,7 +10,9 @@ function Game() {
   const [isInStartScreen, setIsInStartScreen] = useState(true);
   const [showHelp, setShowHelp] = useState(false);
   // const isMobile = useIsMobile();
+
   const isMobile = useMobileLandscape();
+  const isPortrait = useOrientation();
 
   // Mobile controls state
   const [mobileControls, setMobileControls] = useState({
@@ -213,7 +216,26 @@ function Game() {
         className="block w-full h-full focus:outline-none"
         tabIndex={0}
       ></canvas>
-      {isInStartScreen ? (
+      {isPortrait && (
+        <div className="fixed inset-0 bg-[#a5b9fd] z-50 flex items-center justify-center p-6">
+          <div className="text-center text-white max-w-md">
+            <h1 className="text-3xl font-bold mb-4">
+              Please Rotate Your Device
+            </h1>
+
+            <p className="text-lg text-gray-200 mb-6">
+              The experience is best enjoyed in landscape mode
+            </p>
+
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-300">
+              <div className="w-8 h-12 border-2 border-white rounded"></div>
+              <span className="text-2xl">→</span>
+              <div className="w-12 h-8 border-2 border-white rounded"></div>
+            </div>
+          </div>
+        </div>
+      )}
+      {isInStartScreen && !isPortrait ? (
         <div
           className="absolute top-0 left-0 w-full h-screen bg-[#a5d9fd] flex flex-col justify-center items-center z-20"
           onClick={() => {
