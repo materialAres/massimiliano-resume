@@ -210,7 +210,7 @@ function Game() {
   // };
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-full">
       <canvas
         ref={canvasRef}
         className="block w-full h-full focus:outline-none"
@@ -394,9 +394,9 @@ function Game() {
       {/* Mobile Controls */}
       {isMobile && !isInStartScreen && (
         <>
-          <div className="absolute bottom-8 left-8 flex gap-4 z-30">
+          <div className="absolute bottom-2 left-8 flex gap-4 z-30">
             <button
-              className="w-16 h-16 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
+              className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
               onTouchStart={(e) => {
                 e.preventDefault(); // Prevent scrolling/selection
                 setMobileControls((prev) => ({ ...prev, left: true }));
@@ -422,7 +422,7 @@ function Game() {
               </svg>
             </button>
             <button
-              className="w-16 h-16 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
+              className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
               onTouchStart={(e) => {
                 e.preventDefault();
                 setMobileControls((prev) => ({ ...prev, right: true }));
@@ -449,9 +449,9 @@ function Game() {
             </button>
           </div>
 
-          <div className="absolute bottom-8 right-8 z-30">
+          <div className="absolute bottom-2 right-8 z-30">
             <button
-              className="w-20 h-20 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
+              className="w-14 h-14 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
               onTouchStart={(e) => {
                 e.preventDefault();
                 setMobileControls((prev) => ({ ...prev, jump: true }));
@@ -461,7 +461,7 @@ function Game() {
                 setMobileControls((prev) => ({ ...prev, jump: false }));
               }}
             >
-              <span className="text-white font-bold text-xl">JUMP</span>
+              <span className="text-white font-bold text-xs">JUMP</span>
             </button>
           </div>
         </>
