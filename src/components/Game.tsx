@@ -394,7 +394,7 @@ function Game() {
       {/* Mobile Controls */}
       {isMobile && !isInStartScreen && (
         <>
-          <div className="absolute bottom-2 left-8 flex gap-4 z-30">
+          <div className="absolute bottom-2 left-8 flex gap-6 z-30">
             <button
               className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
               onTouchStart={(e) => {
@@ -405,6 +405,7 @@ function Game() {
                 e.preventDefault();
                 setMobileControls((prev) => ({ ...prev, left: false }));
               }}
+              onContextMenu={(e) => e.preventDefault()}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -431,6 +432,7 @@ function Game() {
                 e.preventDefault();
                 setMobileControls((prev) => ({ ...prev, right: false }));
               }}
+              onContextMenu={(e) => e.preventDefault()}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -460,8 +462,18 @@ function Game() {
                 e.preventDefault();
                 setMobileControls((prev) => ({ ...prev, jump: false }));
               }}
+              onContextMenu={(e) => e.preventDefault()}
             >
-              <span className="text-white font-bold text-xs">JUMP</span>
+              <span
+                className="text-white font-bold text-xs"
+                style={{
+                  WebkitUserSelect: "none",
+                  WebkitTouchCallout: "none",
+                  userSelect: "none",
+                }}
+              >
+                JUMP
+              </span>
             </button>
           </div>
         </>

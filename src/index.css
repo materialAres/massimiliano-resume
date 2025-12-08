@@ -58,3 +58,10 @@ canvas {
   height: calc(100% + env(safe-area-inset-bottom));
   display: block;
 }
+
+button {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
