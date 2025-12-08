@@ -3,7 +3,7 @@ export const SPRITE_FRAMES = {
   "player-run-1": "/sprites/player-run-1.png",
   "player-run-2": "/sprites/player-run-2.png",
   "player-run-3": "/sprites/player-run-3.png",
-  "player-run-4": "/sprites/player-run-2.png",
+  "player-run-4": "/sprites/player-run-4.png",
   "player-jump": "/sprites/player-jump.png",
   "box-work": "/assets/box-work.png",
   "box-edu": "/assets/box-edu.png",
@@ -12,6 +12,7 @@ export const SPRITE_FRAMES = {
   "cloud-2": "/assets/cloud-2.png",
   "cloud-3": "/assets/cloud-3.png",
   "cloud-4": "/assets/cloud-4.png",
+  "cloud-5": "/assets/cloud-5.png",
   ground: "/assets/ground.png",
 };
 
@@ -21,19 +22,19 @@ export const boxMap = {
   "box-proj": "projects",
 };
 
-export const loadGameSprites = (k) => {
+export const loadGameSprites = (k: any) => {
   for (const [key, path] of Object.entries(SPRITE_FRAMES)) {
     k.loadSprite(key, path);
   }
 };
 
 export const createBumpBox = (
-  sprite,
-  xPos,
-  k,
-  floorHeight,
-  boxDistanceFromFloor,
-  setActiveBox
+  sprite: string,
+  xPos: number,
+  k: any,
+  floorHeight: number,
+  boxDistanceFromFloor: number,
+  setActiveBox: any
 ) => {
   const originalY = floorHeight - boxDistanceFromFloor;
   const box = k.add([
@@ -72,10 +73,9 @@ export const createBumpBox = (
   });
 
   // Trigger bump when player collides from below
-  box.onCollide("player", (p) => {
-    if (!isBumping && p.pos.y > box.pos.y) {
-      setActiveBox(boxMap[sprite]);
-      // Only bump if player is above the box (hitting from below)
+  box.onCollide("player", (_p: any, col: any) => {
+    if (!isBumping && col.isBottom()) {
+      setActiveBox(boxMap[sprite as keyof typeof boxMap]);
       isBumping = true;
       bumpTimer = 0;
     }
