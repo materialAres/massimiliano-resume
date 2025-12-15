@@ -34,7 +34,7 @@ export const createBumpBox = (
   k: any,
   floorHeight: number,
   boxDistanceFromFloor: number,
-  setActiveBox: any
+  setActiveBox: any,
 ) => {
   const originalY = floorHeight - boxDistanceFromFloor;
   const box = k.add([
