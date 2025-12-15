@@ -5,9 +5,9 @@
 - aggiungere il terreno DONE
 - aggiungere suoni e una musica DONE
 - aggiungere tooltip per aiuto comandi DONE
-- visualizzazione mobile
+- visualizzazione mobile DONE
 - grandezza tasti mobile DONE
-- visualizzazione tablet
+- visualizzazione tablet DONE
 - fare in modo che le scatole non subiscano l'hit se prese lateralmente DONE
 
 ## BUGS

@@ -83,3 +83,14 @@ export const createBumpBox = (
 
   return box;
 };
+
+export const isTouchScreenDevice = () => {
+  try {
+    document.createEvent("TouchEvent");
+    return true;
+  } catch (error) {
+    console.log("Error catching touch event:", error);
+
+    return false;
+  }
+};

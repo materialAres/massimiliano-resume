@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import kaplay from "kaplay";
-import { createBumpBox, loadGameSprites } from "../utils/utils";
-import { useMobileLandscape } from "../hooks/useMobileLandscape";
+import {
+  createBumpBox,
+  isTouchScreenDevice,
+  loadGameSprites,
+} from "../utils/utils";
 import { useOrientation } from "../hooks/useOrientation";
 import useHasSmallHeight from "../hooks/useIsMobile";
+import { boxData } from "../data/boxData";
+import { InfoBox } from "./InfoBox";
 
 function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -13,7 +18,7 @@ function Game() {
   const [showHelp, setShowHelp] = useState(false);
   const [isFading, setIsFading] = useState(false);
 
-  const isMobile = useMobileLandscape();
+  const isMobile = isTouchScreenDevice();
   const isPortrait = useOrientation();
   const hasSmallHeight = useHasSmallHeight();
 
@@ -34,12 +39,12 @@ function Game() {
     if (activeBox) {
       const fadeTimer = setTimeout(() => {
         setIsFading(true);
-      }, 8500);
+      }, 5500);
 
       const removeTimer = setTimeout(() => {
         setActiveBox(null);
         setIsFading(false);
-      }, 9000);
+      }, 6000);
 
       return () => {
         clearTimeout(fadeTimer);
@@ -60,6 +65,8 @@ function Game() {
     });
 
     loadGameSprites(k);
+
+    // TODO: refactor
     k.loadSound("step", "/sounds/step.wav");
     k.loadSound("jump", "/sounds/jump.wav");
     k.loadSound("bgmusic", "/sounds/bg-music.mp3");
@@ -222,13 +229,13 @@ function Game() {
 
   const kRef = useRef<any>(null);
 
-  // TODO: see if it's needed
-  // const handleStartGame = () => {
-  //   if (kRef.current && isInStartScreen) {
-  //     kRef.current.play("bgmusic", { loop: true, volume: 0.2 });
-  //     kRef.current.go("main");
-  //   }
-  // };
+  const handleStartGame = () => {
+    canvasRef.current?.focus();
+    if (isMobile && kRef.current) {
+      kRef.current.play("bgmusic", { loop: true, volume: 0.2 });
+      kRef.current.go("main");
+    }
+  };
 
   return (
     <div className="relative w-full h-full">
@@ -237,6 +244,7 @@ function Game() {
         className="block w-full h-full focus:outline-none"
         tabIndex={0}
       ></canvas>
+      {/* TODO: Refactor */}
       {isPortrait && (
         <div className="fixed inset-0 bg-[#a5b9fd] z-50 flex items-center justify-center p-6">
           <div className="text-center text-white max-w-md">
@@ -259,13 +267,7 @@ function Game() {
       {isInStartScreen && !isPortrait ? (
         <div
           className="absolute top-0 left-0 w-full h-screen bg-[#a5d9fd] flex flex-col justify-center items-center z-20"
-          onClick={() => {
-            canvasRef.current?.focus();
-            if (isMobile && kRef.current) {
-              kRef.current.play("bgmusic", { loop: true, volume: 0.2 });
-              kRef.current.go("main");
-            }
-          }}
+          onClick={handleStartGame}
         >
           <h1 className="text-white text-4xl mb-6 animate-pulse">
             {isMobile ? "Tap to Start" : "Press SPACE to Start"}
@@ -309,112 +311,21 @@ function Game() {
           <div
             className={`absolute top-0 left-0 w-full pointer-events-none p-5`}
           >
-            <h1
-              className={`text-white ${isMobile ? "text-lg text-right" : "text-3xl text-center"} drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] mb-2.5`}
-            >
+            <h1 className="text-white text-lg text-right lg:text-4xl lg:text-center drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] mb-2.5">
               Massimiliano Aresu
             </h1>
 
-            <p
-              className={`text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0 ${isMobile ? "text-[10px] text-right" : "text-sm text-center"}`}
-            >
+            <p className="text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0 text-[10px] text-right lg:text-base lg:text-center">
               Your friendly neighborhood Web Dev
             </p>
-            {activeBox === "work" && (
-              <div
-                className={`mt-10 md:mt-6 ${isMobile ? (!hasSmallHeight ? "mx-auto max-w-sm" : "absolute top-0 left-2") : "mx-72"} text-white ${isFading ? "animate-[pixelScaleReverse_0.4s_ease-out_forwards]" : "animate-[pixelScale_0.4s_ease-out]"}`}
-              >
-                <div
-                  className={`${isMobile ? "max-w-sm bg-[#E0B45D]/40" : "max-w-svw bg-[#E0B45D]"} border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none`}
-                >
-                  <div className="relative z-10 text-center drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
-                    <h2 className={`${isMobile ? "text-sm" : "text-lg"} mb-3`}>
-                      Work Experience
-                    </h2>
-                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
-                      Front-End Developer - EY
-                    </p>
-                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
-                      Apr 2024 - Present
-                    </p>
-                    <p
-                      className={`${isMobile ? "text-[8px]" : "text-xs"} mb-3`}
-                    >
-                      Cagliari, Italy
-                    </p>
-                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
-                      Full-Stack Developer - Clariter
-                    </p>
-                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
-                      Feb 2023 - Feb 2024
-                    </p>
-                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
-                      Remote, Italy
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeBox === "education" && (
-              <div
-                className={`mt-10 md:mt-6 ${isMobile ? (!hasSmallHeight ? "mx-auto max-w-sm" : "absolute top-0 left-2") : "mx-72"} text-white ${isFading ? "animate-[pixelScaleReverse_0.4s_ease-out_forwards]" : "animate-[pixelScale_0.4s_ease-out]"}`}
-              >
-                <div
-                  className={`${isMobile ? "max-w-sm bg-[#E0B45D]/40" : "max-w-svw bg-[#E0B45D]"} border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none`}
-                >
-                  <div className="relative z-10 text-center drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
-                    <h2 className={`${isMobile ? "text-sm" : "text-lg"} mb-3`}>
-                      Education
-                    </h2>
-                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
-                      Bachelor Degree in Languages and Mediation
-                    </p>
-                    <p
-                      className={`${isMobile ? "text-[8px]" : "text-xs"} mb-3`}
-                    >
-                      Cagliari, Italy
-                    </p>
-                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
-                      Django for Everybody, Python Course
-                    </p>
-                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
-                      Coursera.org
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeBox === "projects" && (
-              <div
-                className={`mt-10 md:mt-6 ${isMobile ? (!hasSmallHeight ? "mx-auto max-w-sm" : "absolute top-0 left-2") : "mx-72"} text-white ${isFading ? "animate-[pixelScaleReverse_0.4s_ease-out_forwards]" : "animate-[pixelScale_0.4s_ease-out]"}`}
-              >
-                <div
-                  className={`${isMobile ? "max-w-sm bg-[#E0B45D]/40" : "max-w-svw bg-[#E0B45D]"} border-4 border-[#5D2E0F] rounded-lg p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] relative before:absolute before:inset-2 before:border-2 before:border-[#a17c32] before:rounded before:pointer-events-none`}
-                >
-                  <div className="relative z-10 text-center drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
-                    <h2 className={`${isMobile ? "text-sm" : "text-lg"} mb-3`}>
-                      Projects
-                    </h2>
-                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
-                      The Tempest
-                    </p>
-                    <p
-                      className={`${isMobile ? "text-[8px]" : "text-xs"} mb-3`}
-                    >
-                      An adventure game made with RPG Maker MV based on
-                      Shakespeare's play The Tempest
-                    </p>
-                    <p className={isMobile ? "text-[10px]" : "text-sm"}>
-                      Portfolio page
-                    </p>
-                    <p className={isMobile ? "text-[8px]" : "text-xs"}>
-                      Gamified portfolio page built with React and Kaplay
-                    </p>
-                  </div>
-                </div>
-              </div>
+            {activeBox && boxData[activeBox] && (
+              <InfoBox
+                title={boxData[activeBox].title}
+                items={boxData[activeBox].items}
+                isMobile={isMobile}
+                hasSmallHeight={hasSmallHeight}
+                isFading={isFading}
+              />
             )}
           </div>
         </>
