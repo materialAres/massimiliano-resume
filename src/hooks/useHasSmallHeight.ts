@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 
-const useHasSmallHeight = () => {
+const useHasSmallHeight = (height = 350) => {
   const [hasSmallHeight, setHasSmallHeight] = useState(false);
 
   useEffect(() => {
     const checkHeight = () => {
-      setHasSmallHeight(window.innerHeight < 350);
+      setHasSmallHeight(window.innerHeight < height);
     };
 
     checkHeight();
     window.addEventListener("resize", checkHeight);
 
     return () => window.removeEventListener("resize", checkHeight);
-  }, []);
+  }, [height]);
 
   return hasSmallHeight;
 };
