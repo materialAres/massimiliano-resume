@@ -1,21 +1,12 @@
-## TODO
+# Massimiliano Aresu
 
-- aggiustare il colore dei testi per non farli scontrare con le nuvole DONE
-- provare ad ingrandire le nuvole DONE
-- aggiungere il terreno DONE
-- aggiungere suoni e una musica DONE
-- aggiungere tooltip per aiuto comandi DONE
-- visualizzazione mobile DONE
-- grandezza tasti mobile DONE
-- visualizzazione tablet DONE
-- fare in modo che le scatole non subiscano l'hit se prese lateralmente DONE
-- refactor DONE
-- iconcina desktop
-- muovi nuvole in base alla grandezza dello schermo
+A simple web-based platformer game built using React, Tailwind CSS, and the Kaplay game engine.
 
-## BUGS
+## Installation
 
-- Mobile
-  - Firefox: il contenuto e' tagliato sotto e non si vede il terreno DONE
-  - Chrome: il terreno non si vede DONE
-  - Chrome: tasto jump incolla il testo DONE
+To run the game locally, you will need to have Node.js and npm installed on your machine. Then, run the following commands in your terminal:
+
+- Install dependencies:
+  `npm install`
+- Run the project locally:
+  `npm run dev`
