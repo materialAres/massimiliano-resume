@@ -9,6 +9,8 @@
 - grandezza tasti mobile DONE
 - visualizzazione tablet DONE
 - fare in modo che le scatole non subiscano l'hit se prese lateralmente DONE
+- refactor
+- iconcina desktop
 
 ## BUGS
 

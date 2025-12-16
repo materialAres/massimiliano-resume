@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import kaplay from "kaplay";
+import kaplay, { type KAPLAYCtx } from "kaplay";
 import {
   createBumpBox,
   isTouchScreenDevice,
   loadGameSprites,
+  loadSounds,
 } from "../utils/utils";
 import { useOrientation } from "../hooks/useOrientation";
 import useHasSmallHeight from "../hooks/useIsMobile";
 import { boxData } from "../data/boxData";
 import { InfoBox } from "./InfoBox";
+import type { activeBoxType } from "../types/types";
 
 function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [activeBox, setActiveBox] = useState(null);
+  const [activeBox, setActiveBox] = useState<activeBoxType>(null);
   const [isInStartScreen, setIsInStartScreen] = useState(true);
   const [showHelp, setShowHelp] = useState(false);
   const [isFading, setIsFading] = useState(false);
@@ -65,11 +67,7 @@ function Game() {
     });
 
     loadGameSprites(k);
-
-    // TODO: refactor
-    k.loadSound("step", "/sounds/step.wav");
-    k.loadSound("jump", "/sounds/jump.wav");
-    k.loadSound("bgmusic", "/sounds/bg-music.mp3");
+    loadSounds(k);
 
     k.scene("start", () => {
       setIsInStartScreen(true);
@@ -227,7 +225,7 @@ function Game() {
     };
   }, [canvasRef]);
 
-  const kRef = useRef<any>(null);
+  const kRef = useRef<KAPLAYCtx>(null);
 
   const handleStartGame = () => {
     canvasRef.current?.focus();

@@ -1,3 +1,5 @@
+export type activeBoxType = string | null;
+
 interface InfoItem {
   title: string;
   subtitle?: string;
