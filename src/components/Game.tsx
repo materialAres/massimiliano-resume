@@ -170,7 +170,15 @@ function Game() {
       );
 
       for (let i = 0; i < 5; i++) {
-        const cloudHeight = i % 2 === 0 ? 300 + i * 30 : 280 - i * 30;
+        const cloudHeight =
+          i % 2 === 0
+            ? window.innerHeight > 300
+              ? 300 + i * 30
+              : 150 + i * 30
+            : window.innerHeight > 300
+              ? 280 - i * 30
+              : 130 - i * 30;
+
         k.add([
           k.sprite(`cloud-${i + 1}`),
           k.pos((k.width() / 5) * i + 100, floorHeight - cloudHeight),
