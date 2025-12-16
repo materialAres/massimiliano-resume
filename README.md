@@ -1,6 +1,6 @@
 # Massimiliano Aresu
 
-A simple web-based platformer game built using React, Tailwind CSS, and the Kaplay game engine.
+A simple web-based platformer game portfolio built using React, Tailwind CSS, and the Kaplay game engine.
 
 ## Installation
 
