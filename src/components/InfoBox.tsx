@@ -1,13 +1,7 @@
 import type { InfoBoxProps } from "../types/types";
 import CopyButton from "./buttons/CopyButton";
 
-export const InfoBox: React.FC<InfoBoxProps> = ({
-  title,
-  items,
-  isTouchScreen,
-  hasSmallHeight,
-  isFading,
-}) => {
+export const InfoBox: React.FC<InfoBoxProps> = ({ title, items, isFading }) => {
   return (
     <div
       key={title}
