@@ -5,6 +5,7 @@ export const SPRITE_FRAMES = {
   "player-run-3": "/sprites/player-run-3.png",
   "player-run-4": "/sprites/player-run-4.png",
   "player-jump": "/sprites/player-jump.png",
+  "box-me": "/assets/box-me.png",
   "box-work": "/assets/box-work.png",
   "box-edu": "/assets/box-edu.png",
   "box-proj": "/assets/box-proj.png",
@@ -23,6 +24,7 @@ export const SOUND_FILES = {
 };
 
 export const BOX_MAP = {
+  "box-me": "me",
   "box-work": "work",
   "box-edu": "education",
   "box-proj": "projects",

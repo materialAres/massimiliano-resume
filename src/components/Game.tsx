@@ -25,6 +25,7 @@ function Game() {
   const isTouchScreen = isTouchScreenDevice();
   const isPortrait = useOrientation();
   const hasSmallHeight = useHasSmallHeight();
+  const isTightScreen = useHasSmallHeight(300);
 
   // Mobile controls state
   const [mobileControls, setMobileControls] = useState({
@@ -131,11 +132,21 @@ function Game() {
       ]);
 
       const boxDistanceFromFloor = 170;
+      const numBoxes = 4;
+      const spacing = k.width() / (numBoxes + 1);
 
       // Section boxes
       createBumpBox(
+        "box-me",
+        spacing * 1,
+        k,
+        floorHeight,
+        boxDistanceFromFloor,
+        setActiveBox,
+      );
+      createBumpBox(
         "box-work",
-        k.width() / 4,
+        spacing * 2,
         k,
         floorHeight,
         boxDistanceFromFloor,
@@ -143,7 +154,7 @@ function Game() {
       );
       createBumpBox(
         "box-edu",
-        k.width() / 2,
+        spacing * 3,
         k,
         floorHeight,
         boxDistanceFromFloor,
@@ -151,7 +162,7 @@ function Game() {
       );
       createBumpBox(
         "box-proj",
-        (k.width() / 4) * 3,
+        spacing * 4,
         k,
         floorHeight,
         boxDistanceFromFloor,
@@ -265,15 +276,19 @@ function Game() {
           )}
 
           <div
-            className={`absolute top-0 left-0 w-full pointer-events-none p-5`}
+            className={`absolute top-0 left-0 w-full p-5 pointer-events-none`}
           >
-            <h1 className="text-white text-lg text-right lg:text-4xl lg:text-center drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] mb-2.5">
-              Massimiliano Aresu
-            </h1>
+            {!isTightScreen && (
+              <>
+                <h1 className="text-white text-lg text-right lg:text-4xl lg:text-center drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] mb-2.5">
+                  Massimiliano Aresu
+                </h1>
 
-            <p className="text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0 text-[10px] text-right lg:text-base lg:text-center">
-              Your friendly neighborhood Web Dev
-            </p>
+                <p className="text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] m-0 text-[10px] text-right lg:text-base lg:text-center">
+                  Your friendly neighborhood Web Dev
+                </p>
+              </>
+            )}
             {activeBox && boxData[activeBox] && (
               <InfoBox
                 title={boxData[activeBox].title}
