@@ -19,7 +19,7 @@ export const SPRITE_FRAMES = {
 export const SOUND_FILES = {
   jump: "/sounds/jump.wav",
   step: "/sounds/step.wav",
-  bgmusic: "/sounds/bg-music.mp3",
+  bgmusic: "/sounds/bg-music.ogg",
 };
 
 export const BOX_MAP = {
