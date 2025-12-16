@@ -18,7 +18,7 @@ export const ControlsSection = () => {
         <div className="flex flex-row gap-1">
           <span className="text-[#4A3728] font-semibold">Jump</span>
           <span className="font-mono text-[#4A3728] px-2 inline-block w-fit">
-            W
+            Space
           </span>
         </div>
       </div>

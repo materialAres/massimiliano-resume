@@ -175,7 +175,7 @@ function Game() {
         // Handle movement logic (both keyboard and touch)
         const left = k.isKeyDown("a") || mobileControlsRef.current.left;
         const right = k.isKeyDown("d") || mobileControlsRef.current.right;
-        const jump = k.isKeyPressed("w") || mobileControlsRef.current.jump;
+        const jump = k.isKeyPressed("space") || mobileControlsRef.current.jump;
 
         if (jump && player.isGrounded()) {
           player.jump();
