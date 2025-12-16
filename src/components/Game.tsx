@@ -7,20 +7,22 @@ import {
   loadSounds,
 } from "../utils/utils";
 import { useOrientation } from "../hooks/useOrientation";
-import useHasSmallHeight from "../hooks/useIsMobile";
+import useHasSmallHeight from "../hooks/useHasSmallHeight";
 import { boxData } from "../data/boxData";
 import { InfoBox } from "./InfoBox";
 import type { activeBoxType } from "../types/types";
+import MovementButtons from "./buttons/MovementButtons";
+import { ControlsSection } from "./misc/ControlsSection";
+import { RotateDeviceMessage } from "./misc/RotateDeviceMessage";
 
 function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [activeBox, setActiveBox] = useState<activeBoxType>(null);
   const [isInStartScreen, setIsInStartScreen] = useState(true);
-  const [showHelp, setShowHelp] = useState(false);
   const [isFading, setIsFading] = useState(false);
 
-  const isMobile = isTouchScreenDevice();
+  const isTouchScreen = isTouchScreenDevice();
   const isPortrait = useOrientation();
   const hasSmallHeight = useHasSmallHeight();
 
@@ -229,7 +231,7 @@ function Game() {
 
   const handleStartGame = () => {
     canvasRef.current?.focus();
-    if (isMobile && kRef.current) {
+    if (isTouchScreen && kRef.current) {
       kRef.current.play("bgmusic", { loop: true, volume: 0.2 });
       kRef.current.go("main");
     }
@@ -242,67 +244,23 @@ function Game() {
         className="block w-full h-full focus:outline-none"
         tabIndex={0}
       ></canvas>
-      {/* TODO: Refactor */}
-      {isPortrait && (
-        <div className="fixed inset-0 bg-[#a5b9fd] z-50 flex items-center justify-center p-6">
-          <div className="text-center text-white max-w-md">
-            <h1 className="text-3xl font-bold mb-4">
-              Please Rotate Your Device
-            </h1>
-
-            <p className="text-lg text-gray-200 mb-6">
-              The experience is best enjoyed in landscape mode
-            </p>
-
-            <div className="flex items-center justify-center gap-2 text-sm text-gray-300">
-              <div className="w-8 h-12 border-2 border-white rounded"></div>
-              <span className="text-2xl">→</span>
-              <div className="w-12 h-8 border-2 border-white rounded"></div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Rotate your device */}
+      {isPortrait && isTouchScreen && <RotateDeviceMessage />}
       {isInStartScreen && !isPortrait ? (
         <div
           className="absolute top-0 left-0 w-full h-screen bg-[#a5d9fd] flex flex-col justify-center items-center z-20"
           onClick={handleStartGame}
         >
           <h1 className="text-white text-4xl mb-6 animate-pulse">
-            {isMobile ? "Tap to Start" : "Press SPACE to Start"}
+            {isTouchScreen ? "Tap to Start" : "Press SPACE to Start"}
           </h1>
         </div>
       ) : (
         <>
-          {/* Help Button */}
-          {!isMobile && (
-            <div className="absolute top-8 left-4 z-30">
-              <button
-                className="bg-white/20 backdrop-blur-sm border-2 border-white/50 text-white px-4 py-2 rounded-lg hover:bg-white/40 transition-colors font-bold"
-                onClick={() => setShowHelp(!showHelp)}
-              >
-                Help
-              </button>
-              {showHelp && (
-                <div className="absolute top-full left-0 mt-2 bg-black/80 text-white p-4 rounded-lg w-48 backdrop-blur-md border border-white/20">
-                  <h3 className="font-bold mb-2 border-b border-white/20 pb-1">
-                    Controls
-                  </h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span>Move:</span>
-                      <span className="font-mono bg-white/20 px-1 rounded">
-                        A / D
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Jump:</span>
-                      <span className="font-mono bg-white/20 px-1 rounded">
-                        W
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
+          {/* Controls */}
+          {!isTouchScreen && (
+            <div className="absolute top-4 left-4 z-30 pointer-events-none">
+              <ControlsSection />
             </div>
           )}
 
@@ -320,7 +278,7 @@ function Game() {
               <InfoBox
                 title={boxData[activeBox].title}
                 items={boxData[activeBox].items}
-                isMobile={isMobile}
+                isTouchScreen={isTouchScreen}
                 hasSmallHeight={hasSmallHeight}
                 isFading={isFading}
               />
@@ -330,91 +288,8 @@ function Game() {
       )}
 
       {/* Mobile Controls */}
-      {isMobile && !isInStartScreen && (
-        <>
-          <div className="absolute bottom-2 left-8 flex gap-6 z-30">
-            <button
-              className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
-              onTouchStart={(e) => {
-                e.preventDefault(); // Prevent scrolling/selection
-                setMobileControls((prev) => ({ ...prev, left: true }));
-              }}
-              onTouchEnd={(e) => {
-                e.preventDefault();
-                setMobileControls((prev) => ({ ...prev, left: false }));
-              }}
-              onContextMenu={(e) => e.preventDefault()}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2.5}
-                stroke="white"
-                className="w-8 h-8"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 19.5L8.25 12l7.5-7.5"
-                />
-              </svg>
-            </button>
-            <button
-              className="w-10 h-10 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
-              onTouchStart={(e) => {
-                e.preventDefault();
-                setMobileControls((prev) => ({ ...prev, right: true }));
-              }}
-              onTouchEnd={(e) => {
-                e.preventDefault();
-                setMobileControls((prev) => ({ ...prev, right: false }));
-              }}
-              onContextMenu={(e) => e.preventDefault()}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2.5}
-                stroke="white"
-                className="w-8 h-8"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <div className="absolute bottom-2 right-8 z-30">
-            <button
-              className="w-14 h-14 bg-white/20 backdrop-blur-sm border-2 border-white/50 rounded-full flex items-center justify-center active:bg-white/40 transition-colors"
-              onTouchStart={(e) => {
-                e.preventDefault();
-                setMobileControls((prev) => ({ ...prev, jump: true }));
-              }}
-              onTouchEnd={(e) => {
-                e.preventDefault();
-                setMobileControls((prev) => ({ ...prev, jump: false }));
-              }}
-              onContextMenu={(e) => e.preventDefault()}
-            >
-              <span
-                className="text-white font-bold text-xs"
-                style={{
-                  WebkitUserSelect: "none",
-                  WebkitTouchCallout: "none",
-                  userSelect: "none",
-                }}
-              >
-                JUMP
-              </span>
-            </button>
-          </div>
-        </>
+      {isTouchScreen && !isInStartScreen && (
+        <MovementButtons setMobileControls={setMobileControls} />
       )}
     </div>
   );

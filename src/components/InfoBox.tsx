@@ -3,7 +3,7 @@ import type { InfoBoxProps } from "../types/types";
 export const InfoBox: React.FC<InfoBoxProps> = ({
   title,
   items,
-  isMobile,
+  isTouchScreen,
   hasSmallHeight,
   isFading,
 }) => {
@@ -11,7 +11,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
     <div
       key={title}
       className={`mt-10 lg:mt-6 ${
-        isMobile
+        isTouchScreen
           ? !hasSmallHeight
             ? "flex justify-center"
             : "absolute top-0 left-2 max-w-sm"

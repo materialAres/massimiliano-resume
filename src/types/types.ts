@@ -10,7 +10,7 @@ interface InfoItem {
 export interface InfoBoxProps {
   title: string;
   items: InfoItem[];
-  isMobile: boolean;
+  isTouchScreen: boolean;
   hasSmallHeight: boolean;
   isFading: boolean;
 }

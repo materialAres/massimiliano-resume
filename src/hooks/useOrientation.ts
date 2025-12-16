@@ -6,7 +6,7 @@ export const useOrientation = () => {
   useEffect(() => {
     const checkOrientation = () => {
       // Check if device is mobile/tablet and in portrait mode
-      const isMobile = window.innerWidth <= 768;
+      const isMobile = window.innerWidth <= 1024;
       const isPortraitMode = window.innerHeight > window.innerWidth;
       setIsPortrait(isMobile && isPortraitMode);
     };
