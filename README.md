@@ -10,3 +10,13 @@ To run the game locally, you will need to have Node.js and npm installed on your
   `npm install`
 - Run the project locally:
   `npm run dev`
+
+## Credits
+
+- Source code by materialAres with the help of Claude AI
+- Sprites made with Gemini and ChatGPT, character animations and terrain by Serena Goddi
+- Sound made with Suno AI
+
+## License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
